@@ -25,9 +25,9 @@ def main():
     np_image = np.array(encoded_image)
 
     packet = {
-        'username': 'guojun',
+        'user': 'guojun',
         'mode': 'single-image',
-        'function': 'pose',
+        'function': ['pose'],
         'image': np_image.tolist()
     }
 
@@ -35,7 +35,7 @@ def main():
 
     # send POST
     headers = {'Content-type': 'application/json'}
-    r = requests.post('http://localhost:50001/api/', data=json_packet, headers=headers)
+    r = requests.post('http://localhost:50001/api', data=json_packet, headers=headers)
     # save result
     print(r.json())
     result = np.array(r.json()['result'][0]['output'])
