@@ -19,7 +19,7 @@ def encode_as_list(img):
         print('[M] encode [FAILED]')
         return []
 
-def request_service(user, mode, function, image):
+def request_service(url, user, mode, function, image):
     packet = {
         'user': user,
         'mode': mode,
@@ -29,7 +29,7 @@ def request_service(user, mode, function, image):
 
     # send POST
     headers = {'Content-type': 'application/json'}
-    r = requests.post('http://localhost:50001/api', data=json.dumps(packet), headers=headers)
+    r = requests.post(url, data=json.dumps(packet), headers=headers)
     # print message
     # print('message:', r.json()['msg'])
     print('message:', r.json())

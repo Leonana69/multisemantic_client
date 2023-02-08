@@ -11,7 +11,7 @@ def main():
     # load image
     image = load_image('./assets/images/pose2.jpg')
 
-    results = request_service('guojun', 'single_image', ['pose'], image)
+    results = request_service('172.29.249.77:50001/api', 'guojun', 'single_image', ['pose'], image)
     print(results)
     image = parse_results(image, results) # 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
     cv2.imwrite('./assets/outputs/pose2_res.jpg', image)
