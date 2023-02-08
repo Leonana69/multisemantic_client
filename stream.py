@@ -16,7 +16,7 @@ def main():
         # Display the resulting frame
         if ret:
             frame = cv2.resize(frame, (480, 360), interpolation=cv2.INTER_AREA)
-            results = request_service('172.29.249.77:50001/api', 'guojun', 'single_image', ['slam'], frame)
+            results = request_service('http://172.29.249.77:50001/api', 'guojun', 'single_image', ['slam'], frame)
             image = parse_results(frame, results)
             cv2.imshow('frame', frame)
             # press 'q' to break
