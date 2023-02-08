@@ -31,13 +31,16 @@ def request_service(user, mode, function, image):
     headers = {'Content-type': 'application/json'}
     r = requests.post('http://localhost:50001/api', data=json.dumps(packet), headers=headers)
     # print message
-    print('message:', r.json()['msg'])
+    # print('message:', r.json()['msg'])
+    print('message:', r.json())
     return r.json()['result']
 
 def parse_results(image, results):
     for r in results:
         if r['function'] == 'pose':
             image = draw_pose_keypoints(image, np.array(r['output']))
+        elif r['function'] == 'slam':
+            pass
         else:
             print('[M] function not supported')
     return image
