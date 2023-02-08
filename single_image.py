@@ -3,44 +3,18 @@ import cv2
 import numpy as np
 import requests
 
-def draw_pose_keypoints(image, keypoints):
-    height = image.shape[0]
-    width = image.shape[1]
-    for p in keypoints:
-        cv2.circle(image, (int(width * p[1]), int(height * p[0])), 2, (255, 0, 0), 2)
-    return image
+from utils import load_image, parse_results, request_service
 
-def load_image(path):
-    image = cv2.imread(path)
-    return image
+HOST, PORT = 'localhost', 50001
 
 def main():
-    HOST, PORT = 'localhost', 50001
-
     # load image
-    image = load_image('./assets/images/pose1.jpg')
+    image = load_image('./assets/images/pose2.jpg')
 
-    # this is not the best compression
-    [rslt, encoded_image] = cv2.imencode('.jpg', image)
-    np_image = np.array(encoded_image)
-
-    packet = {
-        'user': 'guojun',
-        'mode': 'single-image',
-        'function': ['pose'],
-        'image': np_image.tolist()
-    }
-
-    json_packet = json.dumps(packet)
-
-    # send POST
-    headers = {'Content-type': 'application/json'}
-    r = requests.post('http://localhost:50001/api', data=json_packet, headers=headers)
-    # save result
-    print(r.json())
-    result = np.array(r.json()['result'][0]['output'])
-    marked_image = draw_pose_keypoints(image, result)
-    cv2.imwrite('./assets/outputs/res1.jpg', marked_image)
+    results = request_service('guojun', 'single_image', ['pose'], image)
+    print(results)
+    image = parse_results(image, results) # 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
+    cv2.imwrite('./assets/outputs/pose2_res.jpg', image)
 
 if __name__ == "__main__":
     main()
