@@ -32,7 +32,7 @@ def request_service(url, user, mode, function, image):
     r = requests.post(url, data=json.dumps(packet), headers=headers)
     # print message
     # print('message:', r.json()['msg'])
-    # print('message:', r.json())
+    print('message:', r.json())
     return r.json()['result']
 
 def parse_results(image, results):

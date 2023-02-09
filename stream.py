@@ -13,7 +13,9 @@ HOST, PORT = 'localhost', 50001
 position_x = []
 position_y = []
 position_z = []
-orientation = []
+orientation_x = []
+orientation_y = []
+orientation_z = []
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.set_xlim3d([-1.0, 1.0])
@@ -30,10 +32,9 @@ def parse_msg(str_msg):
             position_x.append(float(lines[idx + 2].split()[1]))
             position_y.append(float(lines[idx + 3].split()[1]))
             position_z.append(float(lines[idx + 4].split()[1]))
-            ox = float(lines[idx + 6].split()[1])
-            oy = float(lines[idx + 7].split()[1])
-            oz = float(lines[idx + 8].split()[1])
-            orientation.append(np.array([ox, oy, oz]))
+            orientation_x.append(float(lines[idx + 6].split()[1]))
+            orientation_y.append(float(lines[idx + 7].split()[1]))
+            orientation_z.append(float(lines[idx + 8].split()[1]))
             break
 
 def plot(i):
@@ -45,11 +46,11 @@ def plot(i):
 
 def main():
     # 0 for windows, 1 for macOS
-    vid = cv2.VideoCapture(1)
+    vid = cv2.VideoCapture(0)
 
     anim = animation.FuncAnimation(fig, plot, interval=100)
     plt.show(block=False)
-    
+
     while vid.isOpened():
         # Capture the video frame by frame
         ret, frame = vid.read()
