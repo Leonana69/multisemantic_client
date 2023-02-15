@@ -46,7 +46,7 @@ def plot(i):
 
 def main():
     # 0 for windows, 1 for macOS
-    vid = cv2.VideoCapture(0)
+    vid = cv2.VideoCapture(1)
 
     anim = animation.FuncAnimation(fig, plot, interval=100)
     plt.show(block=False)
@@ -54,11 +54,10 @@ def main():
     while vid.isOpened():
         # Capture the video frame by frame
         ret, frame = vid.read()
-        # Display the resulting frame
         if ret:
-            frame = cv2.resize(frame, (480, 360), interpolation=cv2.INTER_AREA)
-            results = request_service('http://172.29.249.77:50001/api', 'guojun', 'stream', ['slam'], frame)
-            # image = parse_results(frame, results)
+            frame = cv2.resize(frame, (540, 360), interpolation=cv2.INTER_AREA)
+            # request slam result
+            results = request_service('https://mscv.yale.edu/api', 'guojun', 'stream', ['slam'], frame)
             
             if len(results) > 0:
                 msg = results[0]['output']
@@ -68,13 +67,9 @@ def main():
             cv2.imshow('frame', frame)
             # press 'q' to break
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                # print(position_x)
-                # print(orientation)
                 break
-  
-    # After the loop release the cap object
+
     vid.release()
-    # Destroy all the windows
     cv2.destroyAllWindows()
     return
 
