@@ -10,6 +10,9 @@ def draw_pose_keypoints(image, keypoints):
     return image
 
 def encode_as_list(img):
+    if img is None:
+        print('[M] encode None')
+        return []
     [ret, encoded_image] = cv2.imencode('.jpg', img)
     if ret:
         np_image = np.array(encoded_image)
@@ -23,9 +26,19 @@ def request_service(url, user, mode, function, image):
     packet = {
         'user': user,
         'mode': mode,
+        'index': 1,
         'function': function,
-        'image': encode_as_list(image)
+        'image': {
+            'format': 'cv_compressed',
+            'data': encode_as_list(image)
+        }
     }
+
+    if image is None:
+        packet['image'] = {
+            'format': 'none',
+            'data': []
+        }
 
     # send POST
     headers = {'Content-type': 'application/json'}

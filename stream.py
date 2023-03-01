@@ -58,6 +58,7 @@ def main():
             frame = cv2.resize(frame, (540, 360), interpolation=cv2.INTER_AREA)
             # request slam result
             results = request_service('https://mscv.yale.edu/api', 'guojun', 'stream', ['slam'], frame)
+            # results = request_service('http://172.29.249.77:50001/api', 'guojun', 'stream', ['slam'], frame)
             
             if len(results) > 0:
                 msg = results[0]['output']
@@ -68,6 +69,8 @@ def main():
             # press 'q' to break
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
+
+    results = request_service('https://mscv.yale.edu/api', 'guojun', 'stop', ['slam'], None)
 
     vid.release()
     cv2.destroyAllWindows()
