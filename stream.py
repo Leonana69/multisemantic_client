@@ -51,14 +51,15 @@ def main():
     anim = animation.FuncAnimation(fig, plot, interval=100)
     plt.show(block=False)
 
+    # use 'duke_drone_1' or 'duke_drone_2' here for user
+    user = 'duke_drone_1'
     while vid.isOpened():
         # Capture the video frame by frame
         ret, frame = vid.read()
         if ret:
             frame = cv2.resize(frame, (540, 360), interpolation=cv2.INTER_AREA)
             # request slam result
-            results = request_service('https://mscv.yale.edu/api', 'guojun', 'stream', ['slam'], frame)
-            # results = request_service('http://172.29.249.77:50001/api', 'guojun', 'stream', ['slam'], frame)
+            results = request_service('https://mscv.yale.edu/api', user, 'stream', ['slam'], frame)
             
             if len(results) > 0:
                 msg = results[0]['output']
@@ -70,7 +71,7 @@ def main():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-    results = request_service('https://mscv.yale.edu/api', 'guojun', 'stop', ['slam'], None)
+    results = request_service('https://mscv.yale.edu/api', user, 'stop', ['slam'], None)
 
     vid.release()
     cv2.destroyAllWindows()
