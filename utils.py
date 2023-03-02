@@ -22,7 +22,7 @@ def encode_as_list(img):
         print('[M] encode [FAILED]')
         return []
 
-def request_service(url, user, mode, function, image, timestamp):
+def request_service(url, user, mode, function, timestamp, image, imu=[]):
     packet = {
         'user': user,
         'mode': mode,
@@ -31,7 +31,8 @@ def request_service(url, user, mode, function, image, timestamp):
         'image': {
             'format': 'cv_compressed',
             'data': encode_as_list(image)
-        }
+        },
+        'imu': imu
     }
 
     if image is None:
