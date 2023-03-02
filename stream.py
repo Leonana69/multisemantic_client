@@ -59,7 +59,7 @@ def main():
         if ret:
             frame = cv2.resize(frame, (540, 360), interpolation=cv2.INTER_AREA)
             # request slam result
-            results = request_service('https://mscv.yale.edu/api', user, 'stream', ['slam'], frame)
+            results = request_service('https://mscv.yale.edu/api', user, 'stream', ['slam'], frame, 0.0)
             
             if len(results) > 0:
                 msg = results[0]['output']

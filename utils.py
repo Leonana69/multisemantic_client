@@ -22,11 +22,11 @@ def encode_as_list(img):
         print('[M] encode [FAILED]')
         return []
 
-def request_service(url, user, mode, function, image):
+def request_service(url, user, mode, function, image, timestamp):
     packet = {
         'user': user,
         'mode': mode,
-        'index': 1,
+        'timestamp': timestamp,
         'function': function,
         'image': {
             'format': 'cv_compressed',
