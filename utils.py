@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-import requests, json
+import requests, json, base64
 
 def draw_pose_keypoints(image, keypoints):
     height = image.shape[0]
@@ -16,11 +16,25 @@ def encode_as_list(img):
     [ret, encoded_image] = cv2.imencode('.jpg', img)
     if ret:
         np_image = np.array(encoded_image)
-        print('[M] encode [SUCCESS]')
+        print('[M] encode as list [SUCCESS]')
         return np_image.tolist()
     else:
         print('[M] encode [FAILED]')
         return []
+
+def encode_as_string(img):
+    if img is None:
+        print('[M] encode None')
+        return []
+    [ret, encoded_image] = cv2.imencode('.png', img)
+    if ret:
+        np_bytes = np.array(encoded_image).tobytes()
+        print('[M] encode as string [SUCCESS]')
+        return base64.encodebytes(np_bytes).decode()
+    else:
+        print('[M] encode [FAILED]')
+        return []
+
 
 def request_service(url, user, mode, function, timestamp, image, imu=[]):
     packet = {
@@ -28,11 +42,15 @@ def request_service(url, user, mode, function, timestamp, image, imu=[]):
         'mode': mode,
         'timestamp': timestamp,
         'function': function,
-        'image': {
-            'format': 'default',
-            'data': encode_as_list(image)
-        },
-        'imu': imu
+        'data': {
+            'image': {
+                'format': 'default',
+                'content': encode_as_string(image)
+            },
+            'imu': {
+                'content': imu,
+            }
+        }
     }
 
     if image is None:
@@ -44,10 +62,8 @@ def request_service(url, user, mode, function, timestamp, image, imu=[]):
     # send POST
     headers = {'Content-type': 'application/json'}
     r = requests.post(url, data=json.dumps(packet), headers=headers)
-    # print message
-    # print('message:', r.json()['msg'])
-    print('message:', r.json())
-    return r.json()['result']
+    print('packet:', r.json())
+    return r.json()['results']
 
 def parse_results(image, results):
     for r in results:
