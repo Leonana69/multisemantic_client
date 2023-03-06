@@ -29,7 +29,7 @@ def request_service(url, user, mode, function, timestamp, image, imu=[]):
         'timestamp': timestamp,
         'function': function,
         'image': {
-            'format': 'cv_compressed',
+            'format': 'default',
             'data': encode_as_list(image)
         },
         'imu': imu
