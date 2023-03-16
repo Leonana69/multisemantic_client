@@ -49,6 +49,9 @@ def request_service(url, user, mode, function, timestamp, image, imu=[]):
         },
         'imu': {
             'content': imu,
+        },
+        'pose': {
+            'content': ""
         }
     }
 
