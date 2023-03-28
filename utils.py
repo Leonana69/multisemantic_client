@@ -35,39 +35,7 @@ def encode_as_string(img):
         print('[M] encode [FAILED]')
         return []
 
-
 def request_service(url, user, mode, function, timestamp, image, imu=[]):
-    packet = {
-        'user': user,
-        'mode': mode,
-        'timestamp': timestamp,
-        'function': function,
-        
-        'image': {
-            'format': 'cv_compressed',
-            'data': encode_as_list(image)
-        },
-        'imu': {
-            'content': imu,
-        },
-        'pose': {
-            'content': ""
-        }
-    }
-
-    if image is None:
-        packet['image'] = {
-            'format': 'none',
-            'data': []
-        }
-
-    # send POST
-    headers = {'Content-type': 'application/json'}
-    r = requests.post(url, data=json.dumps(packet), headers=headers)
-    print('packet:', r.json())
-    return r.json()['result']
-
-def request_service_test(url, user, mode, function, timestamp, image, imu=[]):
     packet = {
         'user': user,
         'mode': mode,
@@ -93,8 +61,7 @@ def request_service_test(url, user, mode, function, timestamp, image, imu=[]):
     # send POST
     headers = {'Content-type': 'application/json'}
     r = requests.post(url, data=json.dumps(packet), headers=headers)
-    print('packet:', r.json())
-    return r.json()['results']
+    return r.json()
 
 def parse_results(image, results):
     for r in results:

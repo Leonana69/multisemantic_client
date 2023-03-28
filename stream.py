@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import animation
 
-from utils import request_service, parse_results
+from utils import request_service_test
 
 HOST, PORT = 'localhost', 50001
 
@@ -57,16 +57,13 @@ def main():
         ret, frame = vid.read()
         if ret:
             frame = cv2.resize(frame, (540, 360), interpolation=cv2.INTER_AREA)
-            # request slam result
-            results = request_service('https://mscv.yale.edu/api', user, 'stream', ['slam'], time.time(), frame)
-
             ## for debug purpose
-            # results = request_service_test('http://172.29.249.77:30000/api', 'duke_drone_1', 'single_image', ['slam'], time.time(), frame)
+            results = request_service_test('http://172.29.249.77:50002/api', user, 'single_image', ['slam'], time.time(), frame)
             
             if len(results) > 0:
                 msg = results[0]['output']
                 if len(msg) > 0:
-                    parse_msg(msg[0])
+                    print(msg[0])
 
             cv2.imshow('frame', frame)
             # press 'q' to break
