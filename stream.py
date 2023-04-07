@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import animation
 
-from utils import request_service_test
+from utils import request_service
 
 HOST, PORT = 'localhost', 50001
 
@@ -57,8 +57,7 @@ def main():
         ret, frame = vid.read()
         if ret:
             frame = cv2.resize(frame, (540, 360), interpolation=cv2.INTER_AREA)
-            ## for debug purpose
-            results = request_service_test('http://172.29.249.77:50002/api', user, 'single_image', ['slam'], time.time(), frame)
+            results = request_service('http://172.29.249.77:50002/api', user, 'image', ['slam'], time.time(), frame)
             
             if len(results) > 0:
                 msg = results[0]['output']

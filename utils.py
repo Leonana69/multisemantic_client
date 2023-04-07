@@ -35,29 +35,24 @@ def encode_as_string(img):
         print('[M] encode [FAILED]')
         return []
 
-def request_service(url, user, mode, function, timestamp, image, imu=[]):
+def request_service(url, user, mode, function, timestamp, data):
     packet = {
         'user': user,
         'mode': mode,
         'timestamp': timestamp,
         'function': function,
-        'data': {
-            'image': {
-                'format': 'default',
-                'content': encode_as_string(image)
-            },
-            'imu': {
-                'content': imu,
-            }
-        }
+        'data': data
+        # 'data': {
+        #     'image': {
+        #         'format': 'default',
+        #         'content': encode_as_string(image)
+        #     },
+        #     'imu': {
+        #         'content': imu,
+        #     }
+        # }
     }
-
-    if image is None:
-        packet['image'] = {
-            'format': 'none',
-            'data': []
-        }
-
+    
     # send POST
     headers = {'Content-type': 'application/json'}
     r = requests.post(url, data=json.dumps(packet), headers=headers)
