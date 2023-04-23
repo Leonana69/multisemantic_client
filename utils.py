@@ -58,6 +58,11 @@ def request_service(url, user, mode, function, timestamp, data):
     r = requests.post(url, data=json.dumps(packet), headers=headers)
     return r.json()
 
+def request_raw(url, packet):
+    headers = {'Content-type': 'application/json'}
+    r = requests.post(url, data=json.dumps(packet), headers=headers)
+    return r.json()
+
 def parse_results(image, results):
     for r in results:
         if r['function'] == 'pose':
