@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 assets/outputs/*
+.DS_Store
